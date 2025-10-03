@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>松未问答助手</title>
+    <link rel="icon" href="logo.ico" type="application/icon">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">松未问答</h1>
+                <div class="header-subtitle">智能问题匹配系统</div>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 欢迎卡片 -->
+            <div class="welcome-card card">
+                <div class="card-icon">💬</div>
+                <h2>欢迎使用问答助手</h2>
+                <p class="welcome-text">已加载 <span id="questionCount">0</span> 个问题</p>
+            </div>
+
+            <!-- 搜索区域 -->
+            <div class="search-section">
+                <div class="search-container">
+                    <div class="search-icon">🔍</div>
+                    <input 
+                        type="text" 
+                        id="questionInput" 
+                        class="search-input" 
+                        placeholder="请输入您的问题..."
+                        autocomplete="off"
+                    >
+                    <button id="clearBtn" class="clear-btn" style="display: none;">✕</button>
+                </div>
+                <button id="searchBtn" class="search-btn">搜索</button>
+            </div>
+
+            <!-- 结果显示区 -->
+            <div id="resultContainer" class="result-container" style="display: none;">
+                <div class="card result-card">
+                    <div class="result-header">
+                        <span class="result-badge" id="confidenceBadge">匹配度</span>
+                        <span class="result-title">匹配结果</span>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-question">
+                            <div class="result-label">重定向至</div>
+                            <div id="matchedQuestion" class="result-value"></div>
+                        </div>
+                        <div class="result-answer">
+                            <div class="result-label">解答</div>
+                            <div id="answerText" class="result-value"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 无结果提示 -->
+            <div id="noResultContainer" class="no-result-container" style="display: none;">
+                <div class="card no-result-card">
+                    <div class="no-result-icon">🤔</div>
+                    <h3>未找到匹配答案</h3>
+                    <p>此问题还没有答案，请联系作者或管理员。</p>
+                </div>
+            </div>
+
+            <!-- 热门问题 -->
+            <div class="popular-section">
+                <h3 class="section-title">热门问题</h3>
+                <div id="popularQuestions" class="popular-grid"></div>
+            </div>
+        </main>
+
+        <!-- 底部信息 -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-notice">
+                    <p>⚠️ 解答只针对重定向的问题，重定向由AI完成</p>
+                    <p>📝 本项目由学生制作，不代表学校官方意见</p>
+                    <p>🤖 本项目部分内容由AI辅助创作</p>
+                    <p>📄 CC-BY-SA-4.0 Licensed | Copyright © 2025-present vinds476283</p>
+                    <p>📄 代码完全重写优化 & 网站搭建 by <a href="https://github.com/Aashaby" target="_blank" class="footer-link">Aashaby</a> | 欢迎提交请求补充知识库内容 <a href="https://github.com/Aashaby/ShitChat/pulls" target="_blank" class="footer-link">GitHub</a></p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://docs.qq.com/sheet/DSGtseUV2Q0Z4eUZQ" target="_blank" class="footer-link">
+                        反馈问题
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 加载动画 -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">正在加载知识库...</p>
+    </div>
+
+    <script src="matcher.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
