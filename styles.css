@@ -247,9 +247,9 @@ body {
 }
 
 .suggestion-icon {
-    width: 18px;
-    height: 18px;
-    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
     color: var(--text-secondary);
     stroke-width: 2;
     flex-shrink: 0;
@@ -257,12 +257,33 @@ body {
 
 .suggestion-text {
     flex: 1;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-primary);
     line-height: 1.4;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .suggestions-container {
+        max-height: 200px;
+    }
+    
+    .suggestion-item {
+        padding: 10px 12px;
+    }
+    
+    .suggestion-icon {
+        width: 14px;
+        height: 14px;
+        margin-right: 8px;
+    }
+    
+    .suggestion-text {
+        font-size: 13px;
+    }
 }
 
 .search-input {
