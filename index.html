@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>松未问答助手</title>
@@ -14,7 +15,7 @@
         <!-- 顶部导航栏 -->
         <header class="header">
             <div class="header-content">
-                <h1 class="logo">松未问答</h1>
+                <h1 class="logo">松未问答助手</h1>
                 <div class="header-subtitle">智能问题匹配系统</div>
             </div>
         </header>
@@ -30,16 +31,20 @@
 
             <!-- 搜索区域 -->
             <div class="search-section">
-                <div class="search-container">
-                    <div class="search-icon">🔍</div>
-                    <input 
-                        type="text" 
-                        id="questionInput" 
-                        class="search-input" 
-                        placeholder="请输入您的问题..."
-                        autocomplete="off"
-                    >
-                    <button id="clearBtn" class="clear-btn" style="display: none;">✕</button>
+                <div class="search-wrapper">
+                    <div class="search-container">
+                        <div class="search-icon">🔍</div>
+                        <input 
+                            type="text" 
+                            id="questionInput" 
+                            class="search-input" 
+                            placeholder="请输入您的问题..."
+                            autocomplete="off"
+                        >
+                        <button id="clearBtn" class="clear-btn" style="display: none;">✕</button>
+                    </div>
+                    <!-- 猜你想问建议列表 -->
+                    <div id="suggestionsContainer" class="suggestions-container" style="display: none;"></div>
                 </div>
                 <button id="searchBtn" class="search-btn">搜索</button>
             </div>

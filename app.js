@@ -17,7 +17,8 @@ const elements = {
     answerText: null,
     confidenceBadge: null,
     questionCount: null,
-    popularQuestions: null
+    popularQuestions: null,
+    suggestionsContainer: null
 };
 
 /**
@@ -36,6 +37,7 @@ async function initApp() {
     elements.confidenceBadge = document.getElementById('confidenceBadge');
     elements.questionCount = document.getElementById('questionCount');
     elements.popularQuestions = document.getElementById('popularQuestions');
+    elements.suggestionsContainer = document.getElementById('suggestionsContainer');
     
     // 加载知识库
     await loadKnowledgeBase();
@@ -95,6 +97,14 @@ function bindEvents() {
     // 输入框输入事件
     elements.questionInput.addEventListener('input', (e) => {
         elements.clearBtn.style.display = e.target.value ? 'flex' : 'none';
+        handleInputChange(e.target.value);
+    });
+    
+    // 点击外部关闭建议
+    document.addEventListener('click', (e) => {
+        if (!elements.questionInput.contains(e.target) && !elements.suggestionsContainer.contains(e.target)) {
+            hideSuggestions();
+        }
     });
     
     // 清除按钮
@@ -103,6 +113,7 @@ function bindEvents() {
         elements.clearBtn.style.display = 'none';
         elements.questionInput.focus();
         hideResults();
+        hideSuggestions();
     });
 }
 
@@ -254,6 +265,89 @@ function displayPopularQuestions() {
 }
 
 /**
+ * 处理输入变化，显示建议
+ */
+function handleInputChange(value) {
+    const trimmedValue = value.trim();
+    
+    if (!trimmedValue || trimmedValue.length < 2) {
+        hideSuggestions();
+        return;
+    }
+    
+    // 获取相关问题建议
+    const suggestions = getSuggestions(trimmedValue, 5);
+    
+    if (suggestions.length === 0) {
+        hideSuggestions();
+        return;
+    }
+    
+    displaySuggestions(suggestions);
+}
+
+/**
+ * 获取问题建议
+ */
+function getSuggestions(query, limit = 5) {
+    const questions = Object.keys(knowledgeBase);
+    const scored = [];
+    
+    questions.forEach(question => {
+        const score = matcher.ensembleSimilarity(query, question);
+        if (score > 0.1) { // 降低阈值以显示更多建议
+            scored.push({ question, score });
+        }
+    });
+    
+    // 按分数排序并返回前N个
+    return scored
+        .sort((a, b) => b.score - a.score)
+        .slice(0, limit)
+        .map(item => item.question);
+}
+
+/**
+ * 显示建议列表
+ */
+function displaySuggestions(suggestions) {
+    elements.suggestionsContainer.innerHTML = '';
+    
+    suggestions.forEach((suggestion, index) => {
+        const item = document.createElement('div');
+        item.className = 'suggestion-item';
+        item.innerHTML = `
+            <svg class="suggestion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <span class="suggestion-text">${suggestion}</span>
+        `;
+        
+        // 点击建议项
+        item.addEventListener('click', () => {
+            elements.questionInput.value = suggestion;
+            elements.clearBtn.style.display = 'flex';
+            hideSuggestions();
+            handleSearch();
+        });
+        
+        elements.suggestionsContainer.appendChild(item);
+    });
+    
+    elements.suggestionsContainer.style.display = 'block';
+}
+
+/**
+ * 隐藏建议列表
+ */
+function hideSuggestions() {
+    if (elements.suggestionsContainer) {
+        elements.suggestionsContainer.style.display = 'none';
+    }
+}
+
+/**
  * 页面加载完成后初始化
  */
 document.addEventListener('DOMContentLoaded', initApp);
@@ -273,5 +367,15 @@ document.addEventListener('keydown', (e) => {
         elements.questionInput.value = '';
         elements.clearBtn.style.display = 'none';
         hideResults();
+        hideSuggestions();
+    }
+    
+    // 上下箭头导航建议
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        const suggestionItems = elements.suggestionsContainer?.querySelectorAll('.suggestion-item');
+        if (suggestionItems && suggestionItems.length > 0) {
+            e.preventDefault();
+            // 可以添加键盘导航逻辑
+        }
     }
 });
