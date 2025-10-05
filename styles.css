@@ -225,15 +225,6 @@ body {
     }
 }
 
-/* 针对微信内置浏览器深色模式 */
-[data-wechat-version] .suggestions-container, 
-@media (prefers-color-scheme: dark) {
-  .suggestions-container {
-    background: var(--bg-secondary) !important; /* 强制深色背景 */
-    border-color: var(--border-color) !important; /* 强制深色边框 */
-  }
-}
-
 .suggestion-item {
     display: flex;
     align-items: center;
