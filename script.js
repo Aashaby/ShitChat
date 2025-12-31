@@ -31,7 +31,7 @@ class AdvancedQuestionMatcher {
         } catch (error) {
             console.error('加载知识库失败:', error);
             this.knowledgeBase = {
-                "": "请先重新加载知识库。"
+                "": ""
             };
 
             this.idfWeights = this.computeIDF();
@@ -43,7 +43,9 @@ class AdvancedQuestionMatcher {
     }
 
     tokenize(text) {
-        text = text.replace(/[^\w\s]/g, '').toLowerCase().trim();
+        text = text.replace(/[^\u4e00-\u9fa5\w\s]/g, '').toLowerCase().trim();
+
+        if (!text) return [];
 
         const chars = text.split('').filter(c => c.trim());
         const tokens = [...chars];
@@ -51,9 +53,9 @@ class AdvancedQuestionMatcher {
         for (let i = 0; i < chars.length - 1; i++) {
             tokens.push(chars[i] + chars[i + 1]);
         }
-        for (let i = 0; i < chars.length - 2; i++) {
-            tokens.push(chars[i] + chars[i + 1] + chars[i + 2]);
-        }
+        // for (let i = 0; i < chars.length - 2; i++) {
+        //     tokens.push(chars[i] + chars[i + 1] + chars[i + 2]);
+        // }
 
         return tokens;
     }
